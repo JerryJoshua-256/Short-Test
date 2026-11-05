@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#102b46" />
+  <title>Module 1 | Urban Design Quiz</title>
+  <style>
+    :root {
+      --navy:#102b46; --navy2:#173d5d; --teal:#16a6a1; --mint:#dff5f1;
+      --ink:#1e2c39; --muted:#6d7b88; --line:#e5ebef; --paper:#f5f8fa;
+      --white:#fff; --gold:#f2bd62; --good:#16845d; --bad:#c24b4b;
+      --shadow:0 22px 70px rgba(16,43,70,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 85% 10%,#e1f3f1 0,transparent 28%),linear-gradient(135deg,#f5f8fa,#edf3f6)}
+    button{font:inherit}
+    .shell{min-height:100vh;display:flex;flex-direction:column}
+    header{height:76px;padding:0 clamp(20px,5vw,72px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(16,43,70,.08);background:rgba(255,255,255,.72);backdrop-filter:blur(12px)}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--navy);font-weight:800;letter-spacing:.01em}
+    .brand-mark{width:38px;height:38px;border-radius:12px;background:var(--navy);display:grid;place-items:center;color:#fff;font-size:19px}
+    .header-tag{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    main{width:min(100% - 36px,900px);margin:auto;padding:48px 0 56px;flex:1;display:flex;align-items:center}
+    .panel{width:100%;background:var(--white);border:1px solid rgba(16,43,70,.07);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}
+    .welcome{display:grid;grid-template-columns:1.1fr .9fr;min-height:520px}
+    .welcome-copy{padding:clamp(30px,6vw,66px);display:flex;flex-direction:column;justify-content:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#087e7a;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:24px;height:2px;background:var(--teal)}
+    h1{font-size:clamp(38px,5.4vw,62px);line-height:1.02;letter-spacing:-.055em;color:var(--navy);margin:20px 0 16px}
+    .welcome-copy p{font-size:17px;line-height:1.7;color:var(--muted);max-width:460px;margin:0}
+    .welcome-art{position:relative;background:linear-gradient(145deg,#102b46,#1d526d);padding:34px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .welcome-art:before,.welcome-art:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.16);border-radius:50%}
+    .welcome-art:before{width:390px;height:390px}.welcome-art:after{width:270px;height:270px}
+    .city-card{position:relative;z-index:1;width:min(100%,330px);height:300px;border:1px solid rgba(255,255,255,.24);border-radius:22px;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);padding:24px;color:white}
+    .city-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#b8d7dd;font-weight:800}
+    .city-title{font-size:25px;font-weight:800;margin-top:9px}
+    .city-svg{width:100%;height:170px;margin-top:15px}
+    .welcome-footer{display:flex;align-items:center;gap:18px;margin-top:34px;flex-wrap:wrap}
+    .primary{border:0;background:var(--teal);color:#fff;font-weight:800;padding:15px 24px;border-radius:13px;cursor:pointer;box-shadow:0 9px 20px rgba(22,166,161,.22);transition:.2s}
+    .primary:hover{background:#108d89;transform:translateY(-1px)}
+    .primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .meta{font-size:13px;color:var(--muted);font-weight:650}
+    .quiz{padding:clamp(24px,5vw,48px)}
+    .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+    .module-pill{background:var(--mint);color:#087e7a;padding:8px 12px;border-radius:99px;font-size:11px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+    .counter{font-size:13px;font-weight:800;color:var(--muted)}
+    .progress-track{height:7px;border-radius:99px;background:#edf1f3;overflow:hidden;margin-bottom:34px}
+    .progress-fill{height:100%;width:5%;background:linear-gradient(90deg,var(--teal),#66c9b8);border-radius:99px;transition:width .35s ease}
+    .question-kicker{font-size:12px;color:var(--teal);font-weight:850;letter-spacing:.13em;text-transform:uppercase;margin-bottom:12px}
+    h2{font-size:clamp(25px,4vw,36px);line-height:1.2;letter-spacing:-.035em;color:var(--navy);margin:0 0 25px;max-width:720px}
+    .options{display:grid;gap:12px}
+    .option{display:flex;align-items:center;gap:14px;text-align:left;width:100%;padding:16px 18px;border:1.5px solid var(--line);background:#fff;border-radius:15px;color:var(--ink);cursor:pointer;transition:.18s}
+    .option:hover{border-color:#8bcfca;background:#f8fdfc}
+    .option:focus-visible,.primary:focus-visible,.secondary:focus-visible{outline:3px solid #9ddbd6;outline-offset:3px}
+    .letter{width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border-radius:10px;background:#f0f4f6;color:#536574;font-weight:850;font-size:13px}
+    .option-text{font-size:15px;line-height:1.45;font-weight:650}
+    .option.selected{border-color:var(--teal);background:#f0fbf9}
+    .option.selected .letter{background:var(--teal);color:#fff}
+    .option.correct{border-color:var(--good);background:#f0faf5}
+    .option.correct .letter{background:var(--good);color:#fff}
+    .option.incorrect{border-color:var(--bad);background:#fff6f5}
+    .option.incorrect .letter{background:var(--bad);color:#fff}
+    .feedback{margin-top:20px;padding:16px 18px;border-radius:14px;background:#f2f7f8;border-left:4px solid var(--teal);display:none}
+    .feedback.show{display:block}
+    .feedback strong{display:block;color:var(--navy);margin-bottom:5px}
+    .feedback p{margin:0;color:#536574;line-height:1.55;font-size:14px}
+    .quiz-actions{display:flex;justify-content:space-between;align-items:center;margin-top:26px;gap:12px}
+    .secondary{border:1px solid var(--line);background:#fff;color:var(--navy);padding:13px 18px;border-radius:12px;font-weight:750;cursor:pointer}
+    .secondary:disabled{opacity:.35;cursor:not-allowed}
+    .hint{font-size:12px;color:#8996a0}
+    .result{text-align:center;padding:clamp(30px,6vw,64px)}
+    .result-icon{width:82px;height:82px;border-radius:26px;background:var(--mint);display:grid;place-items:center;margin:0 auto 20px;font-size:38px}
+    .result h2{margin:12px auto;font-size:clamp(32px,5vw,48px)}
+    .score{font-size:64px;line-height:1;font-weight:900;letter-spacing:-.06em;color:var(--teal);margin:22px 0 8px}
+    .result p{color:var(--muted);line-height:1.65;max-width:510px;margin:0 auto}
+    .result-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+    .review{margin-top:30px;text-align:left;border-top:1px solid var(--line);padding-top:22px}
+    .review h3{color:var(--navy);margin:0 0 14px}
+    .review-item{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.5}
+    .review-item b{display:block;color:var(--navy);margin-bottom:4px}
+    footer{padding:18px 24px;text-align:center;color:#8a969f;font-size:12px}
+    @media(max-width:700px){header{height:66px}.header-tag{display:none}main{padding:25px 0}.welcome{grid-template-columns:1fr}.welcome-art{min-height:280px;grid-row:1}.welcome-copy{padding:30px}.city-card{height:230px}.city-svg{height:115px}.quiz{padding:24px 19px}.quiz-actions{align-items:stretch}.quiz-actions .primary,.quiz-actions .secondary{flex:1}.hint{display:none}}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="brand"><div class="brand-mark">⌂</div><span>URBAN DESIGN <span style="color:var(--teal)">/</span> LEARNING</span></div>
+    <div class="header-tag">Module 1 · Knowledge check</div>
+  </header>
+  <main>
+    <section class="panel" id="welcome">
+      <div class="welcome">
+        <div class="welcome-copy">
+          <div class="eyebrow">Your learning journey</div>
+          <h1>Welcome,<br>Maryam<span style="color:var(--teal)">.</span></h1>
+          <p>Ready to test what you have learned in Module 1: Introduction to Urban Design? Take your time, read each question carefully, and learn from the explanations as you go.</p>
+          <div class="welcome-footer">
+            <button class="primary" id="startBtn">Start the quiz <span aria-hidden="true">→</span></button>
+            <span class="meta">20 questions&nbsp; · &nbsp;Multiple choice&nbsp; · &nbsp;One at a time</span>
+          </div>
+        </div>
+        <div class="welcome-art" aria-label="Stylised illustration of a city">
+          <div class="city-card">
+            <div class="city-label">Module 01</div>
+            <div class="city-title">Introduction to<br>Urban Design</div>
+            <svg class="city-svg" viewBox="0 0 300 165" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 145H300" stroke="#9BD8D1" stroke-width="2"/>
+              <path d="M15 145V80H57V145M64 145V48H112V145M120 145V92H158V145M166 145V28H218V145M226 145V67H285V145" fill="#D6ECE8" fill-opacity=".18" stroke="#C7E9E4" stroke-width="2"/>
+              <path d="M75 64H101M75 82H101M75 100H101M75 118H101M178 46H206M178 64H206M178 82H206M178 100H206M238 84H272M238 102H272M238 120H272" stroke="#9BD8D1" stroke-width="3"/>
+              <path d="M0 150C55 138 88 160 143 150C198 140 240 160 300 148" stroke="#F2BD62" stroke-width="3"/>
+              <circle cx="35" cy="65" r="13" fill="#F2BD62" fill-opacity=".9"/><path d="M35 78V119M25 94L35 85L45 94" stroke="#F2BD62" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel quiz" id="quiz" hidden aria-live="polite">
+      <div class="quiz-top"><span class="module-pill">Module 1 · Urban Design</span><span class="counter" id="counter">Question 1 of 20</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+      <div class="question-kicker" id="topic">Foundations</div>
+      <h2 id="question">Question goes here</h2>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" role="status"><strong id="feedbackTitle"></strong><p id="feedbackText"></p></div>
+      <div class="quiz-actions">
+        <button class="secondary" id="backBtn">← Back</button>
+        <span class="hint">Choose one answer to continue</span>
+        <button class="primary" id="nextBtn" disabled>Next question →</button>
+      </div>
+    </section>
+
+    <section class="panel result" id="result" hidden>
+      <div class="result-icon">✦</div>
+      <div class="eyebrow" style="justify-content:center">Module 1 complete</div>
+      <h2>Well done, Maryam!</h2>
+      <div class="score" id="score">0/20</div>
+      <p id="resultMessage"></p>
+      <div class="result-actions">
+        <button class="primary" id="retryBtn">Try again</button>
+        <button class="secondary" id="reviewBtn">Review answers</button>
+      </div>
+      <div class="review" id="review" hidden><h3>Answer review</h3><div id="reviewList"></div></div>
+    </section>
+  </main>
+  <footer>Learn at your own pace · Module 1: Introduction to Urban Design</footer>
+</div>
+<script>
+const questions = [
+ {topic:"Understanding Urban Design",q:"Which statement best describes Urban Design?",o:["Designing the interior of individual houses","Shaping how buildings, streets and public spaces work together","Planning the construction of highways only","Choosing colours for city buildings"],a:1,e:"Urban Design focuses on the relationships between buildings, streets, public spaces, movement and people."},
+ {topic:"Understanding Urban Design",q:"What does the word “urban” relate to?",o:["Farms and forests only","The inside of buildings","Towns and cities","Natural materials"],a:2,e:"“Urban” refers to towns and cities and the environments within them."},
+ {topic:"Related disciplines",q:"What is the main focus of Urban Planning?",o:["Organising land use and development across a wider area","Designing the furniture inside a house","Selecting paint colours","Designing one building’s façade only"],a:0,e:"Urban Planning looks at the wider organisation of land, development, infrastructure and activities."},
+ {topic:"Related disciplines",q:"Which professional primarily designs individual buildings?",o:["Landscape gardener","Transport officer","Urban planner","Architect"],a:3,e:"Architects primarily design individual buildings, while working with other built-environment professionals."},
+ {topic:"Related disciplines",q:"Which statement best explains the difference between Architecture and Urban Design?",o:["They are exactly the same activity","Architecture focuses mainly on individual buildings; Urban Design considers how buildings and spaces work together","Urban Design only deals with road construction","Architecture focuses only on parks"],a:1,e:"Architecture is mainly concerned with individual buildings; Urban Design considers the wider experience and arrangement of buildings, streets and spaces."},
+ {topic:"Why Urban Design matters",q:"Which is an important aim of good Urban Design?",o:["Making every street suitable only for cars","Removing all public spaces","Creating places that are accessible, safe and enjoyable","Making every building look identical"],a:2,e:"Good Urban Design supports people’s everyday needs through accessibility, safety, comfort, identity and environmental quality."},
+ {topic:"Elements of the urban environment",q:"Which of these is an example of public space?",o:["A private bedroom","A public square","A locked storage room","A private office"],a:1,e:"Public squares, parks and plazas are examples of public spaces where people can gather and spend time."},
+ {topic:"Elements of the urban environment",q:"What is street furniture?",o:["Furniture sold in shops along a street","Furniture inside private homes","Buildings located beside a road","Items such as benches, streetlights, bins and bus shelters"],a:3,e:"Street furniture includes practical objects placed in public spaces to support comfort, safety and use."},
+ {topic:"Elements of the urban environment",q:"Which is an example of green infrastructure?",o:["Street trees and rain gardens","A concrete parking garage","A traffic sign","A glass office tower"],a:0,e:"Green infrastructure includes natural or planted features such as trees, parks, green roofs and rain gardens."},
+ {topic:"Movement and access",q:"What does permeability mean in Urban Design?",o:["How tall buildings are","How easily people can move through an area","How expensive land is","How many colours a building has"],a:1,e:"Permeability describes how easily people can move through an area using the available routes and connections."},
+ {topic:"Movement and access",q:"What does connectivity describe?",o:["The age of buildings","The number of trees in a park","How well places and routes are linked","The height of streetlights"],a:2,e:"Connectivity is about how well streets, paths and destinations link together."},
+ {topic:"Street activity",q:"What is an active frontage?",o:["A blank wall with no doors or windows","A building edge used only for parking","A fence separating a building from the street","A building edge that encourages activity facing the street"],a:3,e:"Active frontages often include doors, windows, shops and entrances that create interaction between buildings and the street."},
+ {topic:"Land use",q:"What does mixed use mean?",o:["Combining different activities, such as homes, shops and offices, in an area or development","Using only one building material","Mixing traffic with pedestrians without separation","Building houses in different colours"],a:0,e:"Mixed use brings different activities together, often making places more convenient and lively."},
+ {topic:"Urban form",q:"What is urban morphology?",o:["The study of city weather","The study of the physical form and pattern of a town or city","The study of building costs only","The study of household income"],a:1,e:"Urban morphology examines the physical structure of places, including buildings, streets, blocks and open spaces."},
+ {topic:"Understanding places",q:"What does “context” mean in Urban Design?",o:["A standard design copied everywhere","The number of floors in a building","The existing characteristics and circumstances of a particular place","The colour of a site boundary"],a:2,e:"Context includes the physical, historical, social, cultural, economic and environmental characteristics of a place."},
+ {topic:"Understanding places",q:"What does legibility mean?",o:["How easily people can understand and navigate a place","How much a building weighs","How many cars use a road","How old a neighbourhood is"],a:0,e:"A legible place is relatively easy to understand and navigate because its routes, landmarks and layout make sense to people."},
+ {topic:"Sustainability",q:"Which statement best describes sustainability in Urban Design?",o:["Building as quickly as possible","Meeting present needs while supporting long-term environmental, social and economic wellbeing","Using concrete for every project","Avoiding all new development"],a:1,e:"Sustainability considers long-term environmental care, social wellbeing and economic needs."},
+ {topic:"Design quality",q:"What does contextually responsive design mean?",o:["Copying a design from another city without changes","Ignoring local people and history","Using the tallest possible buildings","Designing in response to the characteristics of the specific place"],a:3,e:"A contextually responsive design considers the site's people, history, culture, physical form and environment."},
+ {topic:"Design quality",q:"Which choice is most likely to improve the pedestrian experience of a street?",o:["Continuous footpaths, shade and safe crossings","More blank walls and fewer crossings","Removing all seating and trees","Making every route end in a dead end"],a:0,e:"Continuous footpaths, shade and safe crossings make walking safer and more comfortable."},
+ {topic:"Applying Urban Design",q:"You are asked to improve a neighbourhood. What should you do before proposing a design?",o:["Choose a building style immediately","Copy a famous city plan","Understand the existing place and its context","Ignore how people currently use the area"],a:2,e:"Good design begins by understanding the existing conditions, users, opportunities and constraints of the place."}
+];
+
+let current=0, answers=Array(questions.length).fill(null), locked=false;
+const $=id=>document.getElementById(id);
+function show(id){$("welcome").hidden=id!=="welcome";$("quiz").hidden=id!=="quiz";$("result").hidden=id!=="result";}
+function renderQuestion(){
+  locked=answers[current]!==null;
+  const item=questions[current];
+  $("counter").textContent=`Question ${current+1} of ${questions.length}`;
+  $("progress").style.width=`${((current+1)/questions.length)*100}%`;
+  $("topic").textContent=item.topic;
+  $("question").textContent=item.q;
+  $("options").innerHTML="";
+  item.o.forEach((option,index)=>{
+    const btn=document.createElement("button");
+    btn.className="option";btn.type="button";
+    const letter=document.createElement("span");letter.className="letter";letter.textContent=String.fromCharCode(65+index);
+    const label=document.createElement("span");label.className="option-text";label.textContent=option;
+    btn.append(letter,label);
+    btn.addEventListener("click",()=>selectAnswer(index));
+    if(answers[current]!==null){
+      btn.disabled=true;
+      if(index===item.a)btn.classList.add("correct");
+      else if(index===answers[current])btn.classList.add("incorrect");
+    }
+    $("options").appendChild(btn);
+  });
+  $("backBtn").disabled=current===0;
+  $("nextBtn").disabled=answers[current]===null;
+  $("nextBtn").textContent=current===questions.length-1?"See my results →":"Next question →";
+  if(locked){
+    $("feedback").classList.add("show");
+    $("feedbackTitle").textContent=answers[current]===item.a?"Correct! Well done.":"Not quite — here's the correct answer.";
+    $("feedbackText").textContent=item.e;
+  }else $("feedback").classList.remove("show");
+}
+function selectAnswer(index){
+  if(answers[current]!==null)return;
+  answers[current]=index;renderQuestion();
+}
+function start(){current=0;show("quiz");renderQuestion();}
+function next(){if(answers[current]===null)return;if(current<questions.length-1){current++;renderQuestion();}else finish();}
+function back(){if(current>0){current--;renderQuestion();}}
+function finish(){
+  const score=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0);
+  $("score").textContent=`${score}/${questions.length}`;
+  const pct=score/questions.length;
+  $("resultMessage").textContent=pct>=.85?"Excellent work! You have a strong understanding of the key ideas in Module 1.":pct>=.65?"Good effort! Review the explanations for the questions you missed, then try again to strengthen your understanding.":"Keep practising. Revisit the Module 1 lesson, read the explanations, and take the quiz again. Learning takes practice.";
+  $("review").hidden=true;
+  $("reviewList").innerHTML="";
+  questions.forEach((q,i)=>{
+    const el=document.createElement("div");el.className="review-item";
+    const title=document.createElement("b");title.textContent=`${i+1}. ${q.q}`;
+    const answer=document.createElement("div");answer.textContent=`Your answer: ${answers[i]===null?"Not answered":q.o[answers[i]]}`;
+    const correct=document.createElement("div");correct.textContent=`Correct answer: ${q.o[q.a]}`;correct.style.color="var(--good)";
+    const explanation=document.createElement("div");explanation.textContent=q.e;explanation.style.color="var(--muted)";
+    el.append(title,answer,correct,explanation);$("reviewList").appendChild(el);
+  });
+  show("result");
+}
+$("startBtn").addEventListener("click",start);
+$("nextBtn").addEventListener("click",next);
+$("backBtn").addEventListener("click",back);
+$("retryBtn").addEventListener("click",()=>{answers=Array(questions.length).fill(null);current=0;start();});
+$("reviewBtn").addEventListener("click",()=>{$("review").hidden=!$("review").hidden;});
+</script>
+</body>
+</html>
